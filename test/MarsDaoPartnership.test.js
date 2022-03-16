@@ -20,9 +20,9 @@ contract('MarsDaoPartnership', ([alice, bob, carol, scot,developer]) => {
     });
 
     it('addPool', async () => {
-        await this.marsDaoPartnership.addPool(10,this.reward.address,this.mars.address,0,{ from: alice });
+        await this.marsDaoPartnership.addPool(10,this.reward.address,this.mars.address,0,0,0,{ from: alice });
         //console.log((await time.latest ()).toString(10));
-        await this.marsDaoPartnership.addPool(100,this.reward.address,this.mars.address,0,{ from: alice });
+        await this.marsDaoPartnership.addPool(100,this.reward.address,this.mars.address,0,0,0,{ from: alice });
         //console.log((await time.latest ()).toString(10));
         this.vault0=(await this.marsDaoPartnership.poolInfo(0)).rewardsVaultAddress;
         this.vault1=(await this.marsDaoPartnership.poolInfo(1)).rewardsVaultAddress;

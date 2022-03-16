@@ -17,6 +17,8 @@ contract MarsDaoPartnership is ReentrancyGuard,Ownable {
 
     struct UserInfo {
         uint256 depositedAmount;
+        uint256 lastHarvestedBlock;
+        uint256 pendingAmount;
         uint256 rewardDebt;
     }
 
@@ -27,6 +29,8 @@ contract MarsDaoPartnership is ReentrancyGuard,Ownable {
         address depositedTokenAddress;
         uint256 totalDepositedAmount;
         uint256 lastRewardBlock;
+        uint256 harvestAvailableBlock;
+        uint256 harvestPeriod;
         uint256 accRewardsPerShare;
     }
 
@@ -46,12 +50,13 @@ contract MarsDaoPartnership is ReentrancyGuard,Ownable {
         return poolInfo.length;
     }
 
-    constructor() public {}
 
     function addPool(uint256 _rewardPerBlockAmount,
                 address _rewardTokenAddress,
                 address _depositedTokenAddress,
-                uint256 _startBlock) public onlyOwner {
+                uint256 _startBlock,
+                uint256 _harvestAvailableBlock,
+                uint256 _harvestPeriod) public onlyOwner {
         
 
         bytes memory bytecode = type(Vault).creationCode;
@@ -73,6 +78,8 @@ contract MarsDaoPartnership is ReentrancyGuard,Ownable {
             depositedTokenAddress:_depositedTokenAddress,
             totalDepositedAmount:0,
             lastRewardBlock:_lastRewardBlock,
+            harvestAvailableBlock:(block.number > _harvestAvailableBlock ? block.number : _harvestAvailableBlock),
+            harvestPeriod: _harvestPeriod,
             accRewardsPerShare:0
         }));
 
@@ -143,13 +150,25 @@ contract MarsDaoPartnership is ReentrancyGuard,Ownable {
         UserInfo storage user = userInfo[_pid][msg.sender];
         updatePool(_pid);
         
-        if (user.depositedAmount > 0) {
-            uint256 pending = user.depositedAmount.mul(pool.accRewardsPerShare).div(1e18).sub(user.rewardDebt);
-            if(pending > 0) {
-                _safeRewardsTransfer(msg.sender, pending,IERC20(pool.rewardTokenAddress));
-            }
+        
+        uint256 pending = user.depositedAmount.mul(pool.accRewardsPerShare).div(1e18).sub(user.rewardDebt);
+        uint256 rewards=0;
+
+        if(block.number>=pool.harvestAvailableBlock 
+            && block.number>user.lastHarvestedBlock.add(pool.harvestPeriod)){
+
+            rewards=rewards.add(pending).add(user.pendingAmount);
+            user.pendingAmount=0;
+            user.lastHarvestedBlock=block.number;
+
+        }else {
+            user.pendingAmount=user.pendingAmount.add(pending);
         }
 
+        if(rewards>0){
+            _safeRewardsTransfer(msg.sender, rewards, IERC20(pool.rewardTokenAddress));
+        }
+        
         if(_amount > 0) {
             IERC20(pool.depositedTokenAddress).safeTransferFrom(address(msg.sender), address(this), _amount);
             user.depositedAmount = user.depositedAmount.add(_amount);
@@ -169,8 +188,21 @@ contract MarsDaoPartnership is ReentrancyGuard,Ownable {
         updatePool(_pid);
 
         uint256 pending = user.depositedAmount.mul(pool.accRewardsPerShare).div(1e18).sub(user.rewardDebt);
-        if(pending > 0) {
-            _safeRewardsTransfer(msg.sender, pending,IERC20(pool.rewardTokenAddress));
+        uint256 rewards=0;
+
+        if(block.number>=pool.harvestAvailableBlock 
+            && block.number>user.lastHarvestedBlock.add(pool.harvestPeriod)){
+
+            rewards=rewards.add(pending).add(user.pendingAmount);
+            user.pendingAmount=0;
+            user.lastHarvestedBlock=block.number;
+
+        }else {
+            user.pendingAmount=user.pendingAmount.add(pending);
+        }
+
+        if(rewards>0){
+            _safeRewardsTransfer(msg.sender, rewards, IERC20(pool.rewardTokenAddress));
         }
 
         if(_amount > 0) {

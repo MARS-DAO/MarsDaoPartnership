@@ -6,9 +6,9 @@
     "dependencies": {
         "@openzeppelin/test-helpers": "^0.5.10",
         "@truffle/hdwallet-provider": "^1.2.6",
-        "truffle-plugin-verify":"0.5.18",
-        "web3-eth-abi":"1.6.1",
-        "web3-eth":"1.6.1",
-        "web3-utils":"1.6.1"
+        "truffle-plugin-verify": "0.5.18",
+        "web3-eth-abi": "1.6.1",
+        "web3-eth": "1.6.1",
+        "web3-utils": "1.6.1"
     }
 }
