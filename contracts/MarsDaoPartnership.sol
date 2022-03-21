@@ -31,11 +31,14 @@ contract MarsDaoPartnership is ReentrancyGuard,Ownable {
         uint256 lastRewardBlock;
         uint256 harvestAvailableBlock;
         uint256 harvestPeriod;
+        uint256 withdrawFeeBP;
         uint256 accRewardsPerShare;
     }
 
     mapping(uint256 => mapping(address => UserInfo)) public userInfo;
     PoolInfo[] public poolInfo;
+    address public constant burnAddress =
+        0x000000000000000000000000000000000000dEaD;
 
     event Deposit(address indexed user, uint256 indexed pid, uint256 amount);
     event Withdraw(address indexed user, uint256 indexed pid, uint256 amount);
@@ -56,12 +59,13 @@ contract MarsDaoPartnership is ReentrancyGuard,Ownable {
                 address _depositedTokenAddress,
                 uint256 _startBlock,
                 uint256 _harvestAvailableBlock,
-                uint256 _harvestPeriod) public onlyOwner {
+                uint256 _harvestPeriod,
+                uint256 _withdrawFeeBP) public onlyOwner {
         
-
+        require(_withdrawFeeBP>=0 && _withdrawFeeBP<=300);//0-3%
         bytes memory bytecode = type(Vault).creationCode;
         bytecode = abi.encodePacked(bytecode, abi.encode(_rewardTokenAddress));
-        bytes32 salt = keccak256(abi.encodePacked(_rewardPerBlockAmount, block.number));
+        bytes32 salt = keccak256(abi.encodePacked(poolInfo.length, block.number));
 
         address _rewardsVaultAddress;
         assembly {
@@ -80,6 +84,7 @@ contract MarsDaoPartnership is ReentrancyGuard,Ownable {
             lastRewardBlock:_lastRewardBlock,
             harvestAvailableBlock:(block.number > _harvestAvailableBlock ? block.number : _harvestAvailableBlock),
             harvestPeriod: _harvestPeriod,
+            withdrawFeeBP: _withdrawFeeBP,
             accRewardsPerShare:0
         }));
 
@@ -97,6 +102,12 @@ contract MarsDaoPartnership is ReentrancyGuard,Ownable {
             uint256 _rewardPerBlockAmount) 
             external correctPID(_pid) onlyOwner {
         poolInfo[_pid].rewardPerBlockAmount=_rewardPerBlockAmount;
+    }
+
+    function setWithdrawFeeBP(uint256 _pid,uint256 _feeBP) 
+        external correctPID(_pid) onlyOwner {
+        require(_feeBP>=0 && _feeBP<=300);//0-3%
+        poolInfo[_pid].withdrawFeeBP=_feeBP;
     }
 
     function pendingRewards(uint256 _pid, address _user) 
@@ -206,9 +217,14 @@ contract MarsDaoPartnership is ReentrancyGuard,Ownable {
         }
 
         if(_amount > 0) {
+
             user.depositedAmount = user.depositedAmount.sub(_amount);
             pool.totalDepositedAmount=pool.totalDepositedAmount.sub(_amount);
-            IERC20(pool.depositedTokenAddress).safeTransfer(address(msg.sender), _amount);
+            uint256 burnAmount=_amount.mul(pool.withdrawFeeBP).div(10000);
+            if(burnAmount>0){
+                IERC20(pool.depositedTokenAddress).safeTransfer(burnAddress, burnAmount);
+            }
+            IERC20(pool.depositedTokenAddress).safeTransfer(address(msg.sender), _amount.sub(burnAmount));
             emit Withdraw(msg.sender, _pid, _amount);
         }
         user.rewardDebt = user.depositedAmount.mul(pool.accRewardsPerShare).div(1e18);
@@ -223,8 +239,11 @@ contract MarsDaoPartnership is ReentrancyGuard,Ownable {
         user.depositedAmount=0;
         user.rewardDebt=0;
         pool.totalDepositedAmount=pool.totalDepositedAmount.sub(withdrawAmount);
-
-        IERC20(pool.depositedTokenAddress).safeTransfer(address(msg.sender), withdrawAmount);
+        uint256 burnAmount=withdrawAmount.mul(pool.withdrawFeeBP).div(10000);
+        if(burnAmount>0){
+            IERC20(pool.depositedTokenAddress).safeTransfer(burnAddress, burnAmount);
+        }
+        IERC20(pool.depositedTokenAddress).safeTransfer(address(msg.sender), withdrawAmount.sub(burnAmount));
         emit WithdrawEmergency(msg.sender, _pid, withdrawAmount);
     }
 
