@@ -128,7 +128,11 @@ contract MarsDaoPartnership is ReentrancyGuard,Ownable {
                                                         .div(pool.totalDepositedAmount)
                                                     );
         }
-        return user.depositedAmount.mul(accRewardsPerShare).div(1e18).sub(user.rewardDebt);
+        return user.depositedAmount
+            .mul(accRewardsPerShare)
+            .div(1e18)
+            .sub(user.rewardDebt)
+            .add(user.pendingAmount);
     }
 
 

@@ -61,7 +61,7 @@ module.exports = {
        network_id: 56,
        networkCheckTimeout: 10000,
        provider: () => new HDWalletProvider({
-         providerOrUrl: process.env.BSC_MAIN_RPC_URL,
+         providerOrUrl: process.env.MORALIS_BSC_MAIN,
          privateKeys: [process.env.PRIVATE_KEY_BSC]
        }),
        skipDryRun: false,
