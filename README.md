@@ -22,5 +22,6 @@ Network: **Binance Smart Chain**.
 | 2       | 7   | TNDR  | 7.32292    | 9,492,498    | Jul 27, 2022 | Jul 27, 2022  | 0x78436701C092D86B88E319C413743fb7d7F93D7B |
 | 2       | 8   | NMX   | 0.0868     | 35,000       | Aug 31, 2022 | Aug 31, 2022  | 0x99F1D822194fc4a4054526b292aE85262042469B |
 | 2       | 9   | AZY   | 0.52083    | 150,000      | Oct 13, 2022 | Oct 23, 2022  | 0x6c7ca4941f0cFde81AD7C9025Ba7FEda76818A02 |
+| 2       | 10  | WWY   | 2.91331828 | 2,517,107    | Nov 9, 2022  | Dec 9, 2022   | 0xfF18c6f011A6fEbAee55f656db9baE145fFc7056 |
 
 Powered by 2022 © TTM GROUP.
