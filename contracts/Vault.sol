@@ -2,9 +2,10 @@
 
 pragma solidity 0.6.12;
 
-import "./lib/Ownable.sol";
-import "./lib/SafeERC20.sol";
 import "./lib/IERC20.sol";
+import "./lib/SafeERC20.sol";
+import "./lib/Ownable.sol";
+
 
 contract Vault is Ownable{
     using SafeERC20 for IERC20;
