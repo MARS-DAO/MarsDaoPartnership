@@ -1,5 +1,5 @@
 # MarsDaoPartnership
-v2.0.3
+v2.0.4
 
 MarsDAO partnership.
 
@@ -23,5 +23,6 @@ Network: **Binance Smart Chain**.
 | 2       | 8   | NMX   | 0.0868     | 35,000       | Aug 31, 2022 | Aug 31, 2022  | 0x99F1D822194fc4a4054526b292aE85262042469B |
 | 2       | 9   | AZY   | 0.52083    | 150,000      | Oct 13, 2022 | Oct 23, 2022  | 0x6c7ca4941f0cFde81AD7C9025Ba7FEda76818A02 |
 | 2       | 11  | WWY   | 2.91331828 | 2,517,107    | Nov 9, 2022  | Dec 9, 2022   | 0xfF18c6f011A6fEbAee55f656db9baE145fFc7056 |
+| 2       | 12  | TIME  | 0.0005787  | 500          | Feb 15, 2023 | Feb 15, 2023  | 0xbc8cDbbFc42D15a2EB05E4c816B3750afbCe1D10 |
 
 Powered by 2022 © TTM GROUP.
