@@ -24,6 +24,7 @@ Network: **Binance Smart Chain**.
 | 2       | 9   | AZY   | 0.52083    | 150,000      | Oct 13, 2022 | Oct 23, 2022  | 0x6c7ca4941f0cFde81AD7C9025Ba7FEda76818A02 |
 | 2       | 11  | WWY   | 2.91331828 | 2,517,107    | Nov 9, 2022  | Dec 9, 2022   | 0xfF18c6f011A6fEbAee55f656db9baE145fFc7056 |
 | 2       | 12  | TIME  | --         | 500          | Feb 15, 2023 | Feb 15, 2023  | 0xbc8cDbbFc42D15a2EB05E4c816B3750afbCe1D10 |
-| 2       | 13  | TIME  | 0.0005787  | 500          | Feb 16, 2023 | Mar 18, 2023  | 0x70d0bF5BFde1414496EfB3F642a284488290F557 |
+| 2       | 13  | TIME  | 0.0005787  | 500          | Feb 16, 2023 | Mar 15, 2023  | 0x70d0bF5BFde1414496EfB3F642a284488290F557 |
+| 2       | 14  | EVER  | 0.3472222  | 300,000      | Mar 16, 2023 | Apr 15, 2023  | 0x6cFDD58EF05423Cb63402E913cea10f5056F03f7 |
 
 Powered by 2023 © TTM GROUP.
