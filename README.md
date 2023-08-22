@@ -26,5 +26,6 @@ Network: **Binance Smart Chain**.
 | 2       | 12  | TIME  | --         | 500          | Feb 15, 2023 | Feb 15, 2023  | 0xbc8cDbbFc42D15a2EB05E4c816B3750afbCe1D10 |
 | 2       | 13  | TIME  | 0.0005787  | 500          | Feb 16, 2023 | Mar 15, 2023  | 0x70d0bF5BFde1414496EfB3F642a284488290F557 |
 | 2       | 14  | EVER  | 0.3472222  | 300,000      | Mar 16, 2023 | Apr 15, 2023  | 0x6cFDD58EF05423Cb63402E913cea10f5056F03f7 |
+| 2       | 15  | SPLX  | 0.3472     | 300,000      | Aug 22, 2023 | Sep 22, 2023  | 0x345A2F08582484932089Db627342149B1F24dFb5 |
 
 Powered by 2023 © TTM GROUP.
